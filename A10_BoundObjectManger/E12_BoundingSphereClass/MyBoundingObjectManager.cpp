@@ -1,7 +1,10 @@
+#pragma once
+#include <vector>
 class MyBoundingObjectManager
 {
 	static MyBoundingObjectManager* instance;
-	
+	std::vector<MyBoundingObject> boundObj;
+
 public:
 	static MyBoundingObjectManager* GetInstance()
 	{
@@ -17,6 +20,26 @@ public:
 			instance = nullptr;
 		}
 	}
+
+	void addBoundingObject(MyBoundingObject boundObject)
+	{
+		boundObj.push_back(boundObject);
+	}
+
+	void createBoundingObject(std::vector<vector3> vertices)
+	{
+		boundObj.push_back(new MyBoundingObject(vertices));
+	}
+
+	void checkCollisions()
+	{
+
+	}
+
+	void collide()
+	{
+
+	}
 	
 private:
 	MyBoundingObjectManager() {};
@@ -25,7 +48,7 @@ private:
 	~MyBoundingObjectManager() { Release(); }
 	void Release()
 	{
-		
+		boundObj.clear();
 	}
 
-}
+};
