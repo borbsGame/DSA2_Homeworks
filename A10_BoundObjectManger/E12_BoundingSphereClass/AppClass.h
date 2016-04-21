@@ -9,6 +9,7 @@ Date: 2015/09
 #include <SFML\Graphics.hpp>
 #include "MyBoundingSphereClass.h"
 #include "MyBoundingCubeClass.h"
+#include "MyBoundingObjectClass.h"
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
@@ -19,6 +20,9 @@ class AppClass : public ReEngAppClass
 
 	vector3 m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
 	vector3 m_v3O2 = vector3( 2.5f, 0.0f, 0.0f);
+
+	MyBoundingObjectClass* testBO = nullptr;
+	MyBoundingObjectClass* testBO2 = nullptr;
 
 public:
 	typedef ReEngAppClass super;

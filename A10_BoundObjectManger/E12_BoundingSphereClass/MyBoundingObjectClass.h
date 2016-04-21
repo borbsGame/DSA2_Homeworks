@@ -13,6 +13,7 @@ class MyBoundingObjectClass
 	vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector
 	vector3 m_v3Max = vector3(0.0f); //Will store the maximum vector
 	vector3 m_Color = REGREEN;
+	bool m_isVisible = true;
 
 	
 

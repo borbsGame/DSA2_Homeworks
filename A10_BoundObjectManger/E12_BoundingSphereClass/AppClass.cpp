@@ -19,8 +19,10 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 	m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
 
-	m_pBox1 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Steve"));
-	m_pBox2 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Creeper"));
+	//m_pBox1 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Steve"));
+	//m_pBox2 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Creeper"));
+	testBO = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper"));
+	testBO2 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve"));
 }
 
 void AppClass::Update(void)
@@ -41,27 +43,38 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
 
-	m_pBox1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-	m_pBox2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 
-	bool isColliding = m_pBox1->IsColliding(m_pBox2);
+	//m_pBox1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	//m_pBox2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
+	testBO->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
+	testBO2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	
+
+	//bool isColliding = m_pBox1->IsColliding(m_pBox2);
+	bool isColliding = testBO->IsColliding(testBO2);
 
 	if (isColliding)
 	{
-		m_pMeshMngr->AddCubeToQueue(
+		/*m_pMeshMngr->AddCubeToQueue(
 			glm::translate(vector3(m_pBox1->GetCenterG())) *
 			glm::scale(vector3(m_pBox1->GetSize())), RERED, SOLID);
 		m_pMeshMngr->AddCubeToQueue(glm::translate(vector3(m_pBox2->GetCenterG()))  *
-			glm::scale(vector3(m_pBox2->GetSize())), RERED, SOLID);
+			glm::scale(vector3(m_pBox2->GetSize())), RERED, SOLID);*/
+		testBO->setColor(RERED);
+		testBO2->setColor(RERED);
 	}
 	else
 	{
-		m_pMeshMngr->AddCubeToQueue(
+		/*m_pMeshMngr->AddCubeToQueue(
 			glm::translate(vector3(m_pBox1->GetCenterG())) *
 			glm::scale(vector3(m_pBox1->GetSize())), REGREEN, WIRE);
 		m_pMeshMngr->AddCubeToQueue(glm::translate(vector3(m_pBox2->GetCenterG()))  *
-			glm::scale(vector3(m_pBox2->GetSize())), REGREEN, WIRE);
+			glm::scale(vector3(m_pBox2->GetSize())), REGREEN, WIRE);*/
+		testBO->setColor(REGREEN);
+		testBO2->setColor(REGREEN);
 	}
+	testBO->drawBO(m_pMeshMngr);
+	testBO2->drawBO(m_pMeshMngr);
 	
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");

@@ -82,13 +82,15 @@ MyBoundingObjectClass::~MyBoundingObjectClass() {
 };
 
 void MyBoundingObjectClass::drawBO(MeshManagerSingleton* meshMngr) {
-	meshMngr->AddCubeToQueue(
-		glm::translate(vector3(this->GetCentroid())) *
-		glm::scale(vector3(this->GetSize())), m_Color, WIRE);
+	if (m_isVisible) {
+		meshMngr->AddCubeToQueue(
+			glm::translate(vector3(this->GetCentroid())) *
+			glm::scale(vector3(this->GetSize())), m_Color, WIRE);
 
-	meshMngr->AddSphereToQueue(
-		glm::translate(vector3(this->GetCentroid())) *
-		glm::scale(vector3(this->GetRadius()) * 2.0f), m_Color, WIRE);
+		//meshMngr->AddSphereToQueue(
+			//glm::translate(vector3(this->GetCentroid())) *
+			//glm::scale(vector3(this->GetRadius()) * 2.0f), m_Color, WIRE);
+	}
 }
 
 
@@ -122,6 +124,12 @@ vector3 MyBoundingObjectClass::getMaximum() {
 }
 void MyBoundingObjectClass::setMaximum(vector3 newMax) {
 	m_v3Max = newMax;
+}
+bool MyBoundingObjectClass::getVisibility(){
+	return m_isVisible;
+}
+void MyBoundingObjectClass::setVisibility(bool isVisible) {
+	m_isVisible = isVisible;
 }
 
 

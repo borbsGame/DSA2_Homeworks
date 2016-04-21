@@ -32,7 +32,7 @@ public:
 
 	void createBoundingObject(std::vector<vector3> vertices)
 	{
-		//boundObj.push_back(new MyBoundingObjectClass(vertices));
+		boundObj.push_back(new MyBoundingObjectClass(vertices));
 	}
 
 	void checkCollisions()
