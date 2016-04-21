@@ -34,12 +34,26 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 
 	void MyBoundingObjectManager::checkCollisions()
 	{
+		for (int i = 0; i < getNumBoundObjects()-1; i++)
+		{
+			MyBoundingObjectClass temp1 = boundObj.at(i);
+			MyBoundingObjectClass* temp2 = &getBoundObject(i++);
 
+			if (temp1.IsColliding(temp2))
+			{
+				collide(temp1, getBoundObject(i++));
+			}
+			else
+			{
+				setColor(temp1, REGREEN);
+			}
+		}
 	}
 
-	void MyBoundingObjectManager::collide()
+	void MyBoundingObjectManager::collide(MyBoundingObjectClass bObjOne, MyBoundingObjectClass bObjTwo)
 	{
-
+		setColor(bObjOne, RERED);
+		setColor(bObjTwo, RERED);
 	}
 
 	void MyBoundingObjectManager::setMeshManager(MeshManagerSingleton* ms) {

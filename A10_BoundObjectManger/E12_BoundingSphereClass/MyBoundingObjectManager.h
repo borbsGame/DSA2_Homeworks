@@ -28,7 +28,7 @@ public:
 	void checkCollisions();
 
 	
-	void collide();
+	void collide(MyBoundingObjectClass bObjOne, MyBoundingObjectClass bObjTwo);
 
 
 	void setMeshManager(MeshManagerSingleton* ms);
