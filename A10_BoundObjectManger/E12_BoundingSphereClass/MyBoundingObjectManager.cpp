@@ -26,6 +26,10 @@ public:
 		}
 	}
 
+	MyBoundingObjectClass* createBoundingObject(String model) {
+		return new MyBoundingObjectClass(mesh->GetVertexList(model));
+	}
+
 	void addBoundingObject(MyBoundingObjectClass boundObject)
 	{
 		boundObj.push_back(boundObject);
