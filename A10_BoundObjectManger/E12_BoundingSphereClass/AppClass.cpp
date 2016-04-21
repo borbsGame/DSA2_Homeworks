@@ -23,6 +23,8 @@ void AppClass::InitVariables(void)
 	//m_pBox2 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Creeper"));
 	testBO = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper"));
 	testBO2 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve"));
+
+	
 }
 
 void AppClass::Update(void)

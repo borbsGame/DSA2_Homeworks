@@ -83,10 +83,11 @@ MyBoundingObjectClass::~MyBoundingObjectClass() {
 
 void MyBoundingObjectClass::drawBO(MeshManagerSingleton* meshMngr) {
 	if (m_isVisible) {
-		meshMngr->AddCubeToQueue(
-			glm::translate(vector3(this->GetCentroidWorld())) *
-			glm::scale(vector3(this->GetSize())), m_Color, WIRE);
-
+		if (m_boxVisible) {
+			meshMngr->AddCubeToQueue(
+				glm::translate(vector3(this->GetCentroidWorld())) *
+				glm::scale(vector3(this->GetSize())), m_Color, WIRE);
+		}
 		meshMngr->AddSphereToQueue(
 			glm::translate(vector3(this->GetCentroidWorld())) *
 			glm::scale(vector3(this->GetRadius()) * 2.0f), m_Color, WIRE);
@@ -133,6 +134,12 @@ bool MyBoundingObjectClass::getVisibility(){
 }
 void MyBoundingObjectClass::setVisibility(bool isVisible) {
 	m_isVisible = isVisible;
+}
+bool MyBoundingObjectClass::getBoxVisibility() {
+	return m_boxVisible;
+}
+void MyBoundingObjectClass::setBoxVisibility(bool isVisible) {
+	m_boxVisible = isVisible;
 }
 
 
