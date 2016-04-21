@@ -38,7 +38,9 @@ public:
 	void SetModelMatrix(matrix4 a_m4ToWorld);
 
 	//Gets the Bounding Object's center in world coordinates
-	vector3 GetCentroid(void);
+	vector3 GetCentroidWorld(void);
+
+	vector3 GetCentroidLocal(void);
 
 	//Gets radius of Bounding object's collision sphere
 	float GetRadius(void);

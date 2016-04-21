@@ -84,12 +84,12 @@ MyBoundingObjectClass::~MyBoundingObjectClass() {
 void MyBoundingObjectClass::drawBO(MeshManagerSingleton* meshMngr) {
 	if (m_isVisible) {
 		meshMngr->AddCubeToQueue(
-			glm::translate(vector3(this->GetCentroid())) *
+			glm::translate(vector3(this->GetCentroidWorld())) *
 			glm::scale(vector3(this->GetSize())), m_Color, WIRE);
 
-		//meshMngr->AddSphereToQueue(
-			//glm::translate(vector3(this->GetCentroid())) *
-			//glm::scale(vector3(this->GetRadius()) * 2.0f), m_Color, WIRE);
+		meshMngr->AddSphereToQueue(
+			glm::translate(vector3(this->GetCentroidWorld())) *
+			glm::scale(vector3(this->GetRadius()) * 2.0f), m_Color, WIRE);
 	}
 }
 
@@ -98,8 +98,11 @@ void MyBoundingObjectClass::drawBO(MeshManagerSingleton* meshMngr) {
 void MyBoundingObjectClass::SetModelMatrix(matrix4 a_m4ToWorld) { 
 	m_m4ToWorld = a_m4ToWorld;
 }
-vector3 MyBoundingObjectClass::GetCentroid(void) { 
+vector3 MyBoundingObjectClass::GetCentroidWorld(void) { 
 	return vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f)); 
+}
+vector3 MyBoundingObjectClass::GetCentroidLocal(void) {
+	return m_v3Center;
 }
 float MyBoundingObjectClass::GetRadius(void) { 
 	return m_fRadius; 
@@ -135,17 +138,17 @@ void MyBoundingObjectClass::setVisibility(bool isVisible) {
 
 bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther)
 {
-	//Collision check goes here
 	vector3 v3Temp = vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f));
-	vector3 v3Temp1 = vector3(a_pOther->GetModelMatrix() * vector4(a_pOther->GetCentroid(), 1.0f));
+	vector3 v3Temp1 = vector3(a_pOther->GetModelMatrix() * vector4(a_pOther->GetCentroidLocal(), 1.0f));
 
 	bool bAreColliding = false;
 	bAreColliding = (glm::distance(v3Temp, v3Temp1) < m_fRadius + a_pOther->GetRadius());
 
 	if (bAreColliding) {
-		//Collision check goes here
+		m_Color = REBLUE;
+
 		vector3 v3Temp = vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f));
-		vector3 v3Temp1 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->GetCentroid(), 1.0f));
+		vector3 v3Temp1 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->GetCentroidLocal(), 1.0f));
 
 		bAreColliding = true;
 		vector3 vMin1 = vector3(m_m4ToWorld * vector4(m_v3Min, 1.0f));
@@ -172,5 +175,9 @@ bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther)
 			bAreColliding = false;
 
 	}
+	else {
+		m_Color = REGREEN;
+	}
 	return bAreColliding;
+
 }
