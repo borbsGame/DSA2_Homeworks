@@ -12,6 +12,9 @@ class MyBoundingObjectClass
 	vector3 m_v3Center = vector3(0.0f); //Will store the center point
 	vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector
 	vector3 m_v3Max = vector3(0.0f); //Will store the maximum vector
+	vector3 m_Color = REGREEN;
+
+	
 
 
 public:
@@ -50,7 +53,14 @@ public:
 	void setVisibility(bool isVisible);
 	bool getVisibility();
 
-	void setColor();
+	void setColor(vector3 color);
+
+	vector3 getMinimum();
+	void setMinimum(vector3 newMin);
+	vector3 getMaximum();
+	void setMaximum(vector3 newMax);
+
+	void drawBO(MeshManagerSingleton* meshMngr);
 
 private:
 	

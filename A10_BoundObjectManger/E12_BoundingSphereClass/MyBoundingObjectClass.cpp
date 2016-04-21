@@ -77,7 +77,19 @@ MyBoundingObjectClass& MyBoundingObjectClass::operator=(MyBoundingObjectClass co
 	}
 	return *this;
 }
-MyBoundingObjectClass::~MyBoundingObjectClass() { Release(); };
+MyBoundingObjectClass::~MyBoundingObjectClass() { 
+	Release(); 
+};
+
+void MyBoundingObjectClass::drawBO(MeshManagerSingleton* meshMngr) {
+	meshMngr->AddCubeToQueue(
+		glm::translate(vector3(this->GetCentroid())) *
+		glm::scale(vector3(this->GetSize())), m_Color, WIRE);
+
+	meshMngr->AddSphereToQueue(
+		glm::translate(vector3(this->GetCentroid())) *
+		glm::scale(vector3(this->GetRadius()) * 2.0f), m_Color, WIRE);
+}
 
 
 //Accessors
@@ -93,31 +105,45 @@ float MyBoundingObjectClass::GetRadius(void) {
 matrix4 MyBoundingObjectClass::GetModelMatrix(void) {
 	return m_m4ToWorld;
 }
-vector3 GetSize(void) {
-	//return m_v3Size;
+vector3 MyBoundingObjectClass::GetSize(void) {
+	return m_v3Size;
+}
+void MyBoundingObjectClass::setColor(vector3 color) {
+	m_Color = color;
+}
+vector3 MyBoundingObjectClass::getMinimum() {
+	return m_v3Min;
+}
+void MyBoundingObjectClass::setMinimum(vector3 newMin) {
+	m_v3Min = newMin;
+}
+vector3 MyBoundingObjectClass::getMaximum() {
+	return m_v3Max;
+}
+void MyBoundingObjectClass::setMaximum(vector3 newMax) {
+	m_v3Max = newMax;
 }
 
 
-//--- Non Standard Singleton Methods
 bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther)
 {
 	//Collision check goes here
 	vector3 v3Temp = vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f));
-	vector3 v3Temp1 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Center, 1.0f));
+	vector3 v3Temp1 = vector3(a_pOther->GetModelMatrix() * vector4(a_pOther->GetCentroid(), 1.0f));
 
 	bool bAreColliding = false;
-	bAreColliding = (glm::distance(v3Temp, v3Temp1) < m_fRadius + a_pOther->m_fRadius);
+	bAreColliding = (glm::distance(v3Temp, v3Temp1) < m_fRadius + a_pOther->GetRadius());
 
 	if (bAreColliding) {
 		//Collision check goes here
 		vector3 v3Temp = vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f));
-		vector3 v3Temp1 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Center, 1.0f));
+		vector3 v3Temp1 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->GetCentroid(), 1.0f));
 
-		bool bAreColliding = true;
+		bAreColliding = true;
 		vector3 vMin1 = vector3(m_m4ToWorld * vector4(m_v3Min, 1.0f));
 		vector3 vMax1 = vector3(m_m4ToWorld * vector4(m_v3Max, 1.0f));
-		vector3 vMin2 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Min, 1.0f));
-		vector3 vMax2 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Max, 1.0f));
+		vector3 vMin2 = vector3(a_pOther->GetModelMatrix() * vector4(a_pOther->getMinimum(), 1.0f));
+		vector3 vMax2 = vector3(a_pOther->GetModelMatrix() * vector4(a_pOther->getMaximum(), 1.0f));
 
 		//Check for X
 		if (vMax1.x < vMin2.x)
@@ -136,6 +162,7 @@ bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther)
 			bAreColliding = false;
 		if (vMin1.z > vMax2.z)
 			bAreColliding = false;
-	}
 
+	}
+	return bAreColliding;
 }
