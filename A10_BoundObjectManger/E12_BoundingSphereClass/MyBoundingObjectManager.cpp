@@ -1,23 +1,15 @@
-#ifndef __MYBOUNDINGOBJECTMANAGER_H_
-#define __MYBOUNDINGOBJECTMANAGER_H_
+#include "MyBoundingObjectManager.h"
 
-#include "RE\ReEng.h"
-#include <vector>
-#include "MyBoundingObjectClass.h"
-class MyBoundingObjectManager
-{
-	static MyBoundingObjectManager* instance;
-	std::vector<MyBoundingObjectClass> boundObj;
-	static MeshManagerSingleton* mesh;
+MyBoundingObjectManager* MyBoundingObjectManager::instance;
+MeshManagerSingleton* MyBoundingObjectManager::mesh;
 
-public:
-	static MyBoundingObjectManager* GetInstance()
+	MyBoundingObjectManager* MyBoundingObjectManager::GetInstance()
 	{
 		if (instance == nullptr)
 			instance = new MyBoundingObjectManager();
 		return instance;
 	}
-	static void ReleaseInstance()
+	void MyBoundingObjectManager::ReleaseInstance()
 	{
 		if (instance != nullptr)
 		{
@@ -26,64 +18,65 @@ public:
 		}
 	}
 
-	MyBoundingObjectClass* createBoundingObject(String model) {
+	MyBoundingObjectClass* MyBoundingObjectManager::createBoundingObject(String model) {
 		return new MyBoundingObjectClass(mesh->GetVertexList(model));
 	}
 
-	void addBoundingObject(MyBoundingObjectClass boundObject)
+	void MyBoundingObjectManager::addBoundingObject(MyBoundingObjectClass boundObject)
 	{
 		boundObj.push_back(boundObject);
 	}
 
-	void createBoundingObject(std::vector<vector3> vertices)
+	void MyBoundingObjectManager::createBoundingObject(std::vector<vector3> vertices)
 	{
 		boundObj.push_back(MyBoundingObjectClass(vertices));
 	}
 
-	void checkCollisions()
+	void MyBoundingObjectManager::checkCollisions()
 	{
 
 	}
 
-	void collide()
+	void MyBoundingObjectManager::collide()
 	{
 
 	}
 
-	void setMeshManager(MeshManagerSingleton* ms) {
+	void MyBoundingObjectManager::setMeshManager(MeshManagerSingleton* ms) {
 		mesh = ms;
 	}
 
-	int getBoundObjects() {
+	int MyBoundingObjectManager::getNumBoundObjects() {
 		return boundObj.size();
 	}
-	void boxVisable(MyBoundingObjectClass boundObject, bool vis) {
+
+	MyBoundingObjectClass MyBoundingObjectManager::getBoundObject(int index)
+	{
+		if (index < getNumBoundObjects())
+			return boundObj[index];
+		else
+			return boundObj[0];
+	}
+
+	void MyBoundingObjectManager::boxVisable(MyBoundingObjectClass boundObject, bool vis) {
 		boundObject.setBoxVisibility(vis);
 	}
-	void setColor(MyBoundingObjectClass boundObject, vector3 color) {
+	void MyBoundingObjectManager::setColor(MyBoundingObjectClass boundObject, vector3 color) {
 		boundObject.setColor(color);
 	}
-	void renderSpecific(MyBoundingObjectClass boundObject) {
+	void MyBoundingObjectManager::renderSpecific(MyBoundingObjectClass boundObject) {
 		boundObject.drawBO(mesh);
 		boundObject.setBoxVisibility(true);
 	}
-	void renderAll() {
+	void MyBoundingObjectManager::renderAll() {
 		for each(MyBoundingObjectClass bound in boundObj) {
 			bound.drawBO(mesh);
 			bound.setBoxVisibility(true);
 		}
 	}
-	
-private:
-	MyBoundingObjectManager() {};
-	MyBoundingObjectManager(MyBoundingObjectManager const& other) {};
-	MyBoundingObjectManager& operator=(MyBoundingObjectManager const& other) {};
-	~MyBoundingObjectManager() { Release(); }
-	void Release()
+
+
+	void MyBoundingObjectManager::Release()
 	{
 		boundObj.clear();
 	}
-	
-};
-
-#endif //__MYBOUNDINGOBJECTMANAGER_H_

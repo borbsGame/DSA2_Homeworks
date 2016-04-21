@@ -109,6 +109,7 @@ xcopy "$(SolutionDir)include\RE\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     <ClInclude Include="AppClass.h" />
     <ClInclude Include="MyBoundingCubeClass.h" />
     <ClInclude Include="MyBoundingObjectClass.h" />
+    <ClInclude Include="MyBoundingObjectManager.h" />
     <ClInclude Include="MyBoundingSphereClass.h" />
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,8 @@ void AppClass::InitWindow(String a_sWindowName)
 
 void AppClass::InitVariables(void)
 {
+	Manager = MyBoundingObjectManager::GetInstance();
+
 	//Initialize positions
 	m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
 	m_v3O2 = vector3(2.5f, 0.0f, 0.0f);
@@ -24,8 +26,8 @@ void AppClass::InitVariables(void)
 
 	//m_pBox1 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Steve"));
 	//m_pBox2 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Creeper"));
-	testBO = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper"));
-	testBO2 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve"));
+	 Manager->addBoundingObject(MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve")));
+	 Manager->addBoundingObject(MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper")));
 
 	
 }
@@ -51,10 +53,12 @@ void AppClass::Update(void)
 
 	//m_pBox1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
 	//m_pBox2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
-	testBO->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
-	testBO2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	Manager->boundObj[0].SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	Manager->boundObj[1].SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 	
+	Manager->checkCollisions();
 
+	/* Will be replaced by MyBoundingObjectmanager.checkCollisions
 	//bool isColliding = m_pBox1->IsColliding(m_pBox2);
 	bool isColliding = testBO->IsColliding(testBO2);
 
@@ -64,7 +68,7 @@ void AppClass::Update(void)
 			glm::translate(vector3(m_pBox1->GetCenterG())) *
 			glm::scale(vector3(m_pBox1->GetSize())), RERED, SOLID);
 		m_pMeshMngr->AddCubeToQueue(glm::translate(vector3(m_pBox2->GetCenterG()))  *
-			glm::scale(vector3(m_pBox2->GetSize())), RERED, SOLID);*/
+			glm::scale(vector3(m_pBox2->GetSize())), RERED, SOLID);*//*
 		testBO->setColor(RERED);
 		testBO2->setColor(RERED);
 	}
@@ -74,12 +78,12 @@ void AppClass::Update(void)
 			glm::translate(vector3(m_pBox1->GetCenterG())) *
 			glm::scale(vector3(m_pBox1->GetSize())), REGREEN, WIRE);
 		m_pMeshMngr->AddCubeToQueue(glm::translate(vector3(m_pBox2->GetCenterG()))  *
-			glm::scale(vector3(m_pBox2->GetSize())), REGREEN, WIRE);*/
+			glm::scale(vector3(m_pBox2->GetSize())), REGREEN, WIRE);*//*
 		testBO->setColor(REGREEN);
 		testBO2->setColor(REGREEN);
-	}
-	testBO->drawBO(m_pMeshMngr);
-	testBO2->drawBO(m_pMeshMngr);
+	}*/
+	Manager->boundObj[0].drawBO(m_pMeshMngr);
+	Manager->boundObj[1].drawBO(m_pMeshMngr);
 	
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
@@ -125,6 +129,8 @@ void AppClass::Display(void)
 
 void AppClass::Release(void)
 {
+	MyBoundingObjectManager::ReleaseInstance();
+	/*
 	if (m_pBox1 != nullptr)
 	{
 		delete m_pBox1;
@@ -136,6 +142,6 @@ void AppClass::Release(void)
 		delete m_pBox2;
 		m_pBox2 = nullptr;
 
-	}
+	}*/
 	super::Release(); //release the memory of the inherited fields
 }
