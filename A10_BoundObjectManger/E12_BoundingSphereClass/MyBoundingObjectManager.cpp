@@ -34,26 +34,66 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 
 	void MyBoundingObjectManager::checkCollisions()
 	{
-		for (int i = 0; i < getNumBoundObjects()-1; i++)
+		/*int index = 0;
+		MyBoundingObjectClass temp1 = boundObj.at(index);
+
+		int count = 1;
+		bool notDone = true;
+
+		while (index < getNumBoundObjects())
 		{
-			MyBoundingObjectClass temp1 = boundObj.at(i);
-			MyBoundingObjectClass* temp2 = &getBoundObject(i++);
+			MyBoundingObjectClass* temp2 = &getBoundObject(count);
 
 			if (temp1.IsColliding(temp2))
 			{
-				collide(temp1, getBoundObject(i++));
+				collide(temp1, getBoundObject(count));
 			}
 			else
 			{
 				setColor(temp1, REGREEN);
+				if (count == getNumBoundObjects()) { count = 0; index++; }
+				else { count++; }
+				
+			}
+
+		}*/
+		int count = 1;
+		int numofBO = getNumBoundObjects();
+		static int index = 0;
+
+		for (int i = 1; i < numofBO; i++)
+		{
+			MyBoundingObjectClass temp1 = boundObj.at(index);
+			MyBoundingObjectClass* temp2 = &getBoundObject(i);
+
+			if (temp1.IsColliding(temp2))
+			{
+				collide(temp1, getBoundObject(i));
+			}
+			else if (count == 0)
+			{
+				index++;
+			}
+			else
+			{
+				setColor(temp1, REGREEN);
+				count++;
+				count %= numofBO;
 			}
 		}
+
+		if (index == numofBO)
+		{
+			index = 0;
+		}
+
+
 	}
 
 	void MyBoundingObjectManager::collide(MyBoundingObjectClass bObjOne, MyBoundingObjectClass bObjTwo)
 	{
-		setColor(bObjOne, RERED);
-		setColor(bObjTwo, RERED);
+		setColor(bObjOne, REBLUE);
+		setColor(bObjTwo, REBLUE);
 	}
 
 	void MyBoundingObjectManager::setMeshManager(MeshManagerSingleton* ms) {
