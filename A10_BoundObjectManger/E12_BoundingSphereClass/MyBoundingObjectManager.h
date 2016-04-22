@@ -10,7 +10,7 @@ class MyBoundingObjectManager
 	static MeshManagerSingleton* mesh;
 
 public:
-	std::vector<MyBoundingObjectClass> boundObj;
+	std::vector<MyBoundingObjectClass*> boundObj;
 
 	static MyBoundingObjectManager* GetInstance();
 
@@ -19,7 +19,7 @@ public:
 
 	MyBoundingObjectClass* createBoundingObject(String model);
 
-	void addBoundingObject(MyBoundingObjectClass boundObject);
+	void addBoundingObject(MyBoundingObjectClass* boundObject);
 
 
 	void createBoundingObject(std::vector<vector3> vertices);
@@ -28,18 +28,18 @@ public:
 	void checkCollisions();
 
 	
-	void collide(MyBoundingObjectClass bObjOne, MyBoundingObjectClass bObjTwo);
+	void collide(MyBoundingObjectClass* bObjOne, MyBoundingObjectClass* bObjTwo);
 
 
 	void setMeshManager(MeshManagerSingleton* ms);
 
 	int getNumBoundObjects();
-	MyBoundingObjectClass getBoundObject(int index);
+	MyBoundingObjectClass* getBoundObject(int index);
 	
 
-	void boxVisable(MyBoundingObjectClass boundObject, bool vis);
-	void setColor(MyBoundingObjectClass boundObject, vector3 color);
-	void renderSpecific(MyBoundingObjectClass boundObject);
+	void boxVisable(MyBoundingObjectClass* boundObject, bool vis);
+	void setColor(MyBoundingObjectClass* boundObject, vector3 color);
+	void renderSpecific(MyBoundingObjectClass* boundObject);
 	void renderAll();
 	
 

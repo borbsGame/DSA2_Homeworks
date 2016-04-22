@@ -12,11 +12,9 @@ class MyBoundingObjectClass
 	vector3 m_v3Center = vector3(0.0f); //Will store the center point
 	vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector
 	vector3 m_v3Max = vector3(0.0f); //Will store the maximum vector
-	vector3 m_Color = REGREEN;
+	vector3 m_Color = REBLUE;
 	bool m_isVisible = true;
 	bool m_boxVisible = true;
-
-	
 
 
 public:

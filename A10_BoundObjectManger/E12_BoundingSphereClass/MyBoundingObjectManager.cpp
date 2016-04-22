@@ -13,6 +13,7 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 	{
 		if (instance != nullptr)
 		{
+
 			delete instance;
 			instance = nullptr;
 		}
@@ -22,14 +23,14 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 		return new MyBoundingObjectClass(mesh->GetVertexList(model));
 	}
 
-	void MyBoundingObjectManager::addBoundingObject(MyBoundingObjectClass boundObject)
+	void MyBoundingObjectManager::addBoundingObject(MyBoundingObjectClass* boundObject)
 	{
 		boundObj.push_back(boundObject);
 	}
 
 	void MyBoundingObjectManager::createBoundingObject(std::vector<vector3> vertices)
 	{
-		boundObj.push_back(MyBoundingObjectClass(vertices));
+		boundObj.push_back(new MyBoundingObjectClass(vertices));
 	}
 
 	void MyBoundingObjectManager::checkCollisions()
@@ -63,10 +64,10 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 
 		for (int i = 1; i < numofBO; i++)
 		{
-			MyBoundingObjectClass temp1 = boundObj.at(index);
-			MyBoundingObjectClass* temp2 = &getBoundObject(i);
+			MyBoundingObjectClass* temp1 = boundObj.at(index);
+			MyBoundingObjectClass* temp2 = getBoundObject(i);
 
-			if (temp1.IsColliding(temp2))
+			if (temp1->IsColliding(temp2))
 			{
 				collide(temp1, getBoundObject(i));
 			}
@@ -77,6 +78,7 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 			else
 			{
 				setColor(temp1, REGREEN);
+				setColor(temp2, REGREEN);
 				count++;
 				count %= numofBO;
 			}
@@ -90,10 +92,10 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 
 	}
 
-	void MyBoundingObjectManager::collide(MyBoundingObjectClass bObjOne, MyBoundingObjectClass bObjTwo)
+	void MyBoundingObjectManager::collide(MyBoundingObjectClass* bObjOne, MyBoundingObjectClass* bObjTwo)
 	{
-		setColor(bObjOne, REBLUE);
-		setColor(bObjTwo, REBLUE);
+		setColor(bObjOne, RERED);
+		setColor(bObjTwo, RERED);
 	}
 
 	void MyBoundingObjectManager::setMeshManager(MeshManagerSingleton* ms) {
@@ -104,7 +106,7 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 		return boundObj.size();
 	}
 
-	MyBoundingObjectClass MyBoundingObjectManager::getBoundObject(int index)
+	MyBoundingObjectClass* MyBoundingObjectManager::getBoundObject(int index)
 	{
 		if (index < getNumBoundObjects())
 			return boundObj[index];
@@ -112,25 +114,28 @@ MeshManagerSingleton* MyBoundingObjectManager::mesh;
 			return boundObj[0];
 	}
 
-	void MyBoundingObjectManager::boxVisable(MyBoundingObjectClass boundObject, bool vis) {
-		boundObject.setBoxVisibility(vis);
+	void MyBoundingObjectManager::boxVisable(MyBoundingObjectClass* boundObject, bool vis) {
+		boundObject->setBoxVisibility(vis);
 	}
-	void MyBoundingObjectManager::setColor(MyBoundingObjectClass boundObject, vector3 color) {
-		boundObject.setColor(color);
+	void MyBoundingObjectManager::setColor(MyBoundingObjectClass* boundObject, vector3 color) {
+		boundObject->setColor(color);
 	}
-	void MyBoundingObjectManager::renderSpecific(MyBoundingObjectClass boundObject) {
-		boundObject.drawBO(mesh);
-		boundObject.setBoxVisibility(true);
+	void MyBoundingObjectManager::renderSpecific(MyBoundingObjectClass* boundObject) {
+		boundObject->drawBO(mesh);
+		boundObject->setBoxVisibility(true);
 	}
 	void MyBoundingObjectManager::renderAll() {
-		for each(MyBoundingObjectClass bound in boundObj) {
-			bound.drawBO(mesh);
-			bound.setBoxVisibility(true);
+		for each(MyBoundingObjectClass* bound in boundObj) {
+			bound->drawBO(mesh);
+			bound->setBoxVisibility(true);
 		}
 	}
 
 
 	void MyBoundingObjectManager::Release()
 	{
+		for each(MyBoundingObjectClass* bound in boundObj) {
+			delete bound;
+		}
 		boundObj.clear();
 	}

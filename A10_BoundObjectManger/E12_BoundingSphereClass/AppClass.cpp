@@ -26,8 +26,8 @@ void AppClass::InitVariables(void)
 
 	//m_pBox1 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Steve"));
 	//m_pBox2 = new MyBoundingCubeClass(m_pMeshMngr->GetVertexList("Creeper"));
-	 Manager->addBoundingObject(MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve")));
-	 Manager->addBoundingObject(MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper")));
+	 Manager->addBoundingObject(new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve")));
+	 Manager->addBoundingObject(new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper")));
 
 	
 }
@@ -53,8 +53,8 @@ void AppClass::Update(void)
 
 	//m_pBox1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
 	//m_pBox2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
-	Manager->boundObj[0].SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-	Manager->boundObj[1].SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
+	Manager->boundObj[0]->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	Manager->boundObj[1]->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 	
 	Manager->checkCollisions();
 
@@ -82,8 +82,8 @@ void AppClass::Update(void)
 		testBO->setColor(REGREEN);
 		testBO2->setColor(REGREEN);
 	}*/
-	Manager->boundObj[0].drawBO(m_pMeshMngr);
-	Manager->boundObj[1].drawBO(m_pMeshMngr);
+	Manager->boundObj[0]->drawBO(m_pMeshMngr);
+	Manager->boundObj[1]->drawBO(m_pMeshMngr);
 	
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");

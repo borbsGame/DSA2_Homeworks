@@ -86,11 +86,17 @@ void MyBoundingObjectClass::drawBO(MeshManagerSingleton* meshMngr) {
 		if (m_boxVisible) {
 			meshMngr->AddCubeToQueue(
 				glm::translate(vector3(this->GetCentroidWorld())) *
-				glm::scale(vector3(this->GetSize())), m_Color, WIRE);
+				glm::scale(vector3(this->GetSize())), this->m_Color, WIRE);
 		}
 		meshMngr->AddSphereToQueue(
 			glm::translate(vector3(this->GetCentroidWorld())) *
-			glm::scale(vector3(this->GetRadius()) * 2.0f), m_Color, WIRE);
+			glm::scale(vector3(this->GetRadius()) * 2.0f), this->m_Color, WIRE);
+	}
+	if (this->m_Color == RERED) {
+		std::cout << "ayo";
+	}
+	if (this->m_Color == REGREEN) {
+		std::cout << "ayo";
 	}
 }
 
@@ -115,7 +121,7 @@ vector3 MyBoundingObjectClass::GetSize(void) {
 	return m_v3Size;
 }
 void MyBoundingObjectClass::setColor(vector3 color) {
-	m_Color = color;
+	this->m_Color = color;
 }
 vector3 MyBoundingObjectClass::getMinimum() {
 	return m_v3Min;
@@ -152,7 +158,6 @@ bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther)
 	bAreColliding = (glm::distance(v3Temp, v3Temp1) < m_fRadius + a_pOther->GetRadius());
 
 	if (bAreColliding) {
-		m_Color = REBLUE;
 
 		vector3 v3Temp = vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f));
 		vector3 v3Temp1 = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->GetCentroidLocal(), 1.0f));
@@ -181,9 +186,6 @@ bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther)
 		if (vMin1.z > vMax2.z)
 			bAreColliding = false;
 
-	}
-	else {
-		m_Color = REGREEN;
 	}
 	return bAreColliding;
 
