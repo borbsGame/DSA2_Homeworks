@@ -235,5 +235,47 @@ bool MyBOClass::IsColliding(MyBOClass* const a_pOther)
 	if (m_v3MinG.z > a_pOther->m_v3MaxG.z)
 		bColliding = false;
 
+
+	if (bColliding) {
+		return RunSAT(a_pOther);
+	}
+
 	return bColliding;
+}
+
+bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
+	float ra, rb;
+	matrix3 rot, absRot;
+	vector3 myAxes[3];
+	vector3 otherAxes[3];
+
+	myAxes[0] = vector3(m_m4ToWorld[0][0], m_m4ToWorld[0][1], m_m4ToWorld[0][2]);
+	myAxes[1] = vector3(m_m4ToWorld[1][0], m_m4ToWorld[1][1], m_m4ToWorld[1][2]);
+	myAxes[2] = vector3(m_m4ToWorld[2][0], m_m4ToWorld[2][1], m_m4ToWorld[2][2]);
+
+	otherAxes[0] = vector3(a_pOther->m_m4ToWorld[0][0], a_pOther->m_m4ToWorld[0][1], a_pOther->m_m4ToWorld[0][2]);
+	otherAxes[1] = vector3(a_pOther->m_m4ToWorld[1][0], a_pOther->m_m4ToWorld[1][1], a_pOther->m_m4ToWorld[1][2]);
+	otherAxes[2] = vector3(a_pOther->m_m4ToWorld[2][0], a_pOther->m_m4ToWorld[2][1], a_pOther->m_m4ToWorld[2][2]);
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			rot[i][j] = dotProduct(myAxes[i], otherAxes[j]);
+		}
+	}
+
+	//TODO: RETURN TO THIS, MIGHT BE GLOBAL
+	vector3 translation = a_pOther->GetCenterLocal() - this->GetCenterLocal();
+	translation = vector3(dotProduct(translation, myAxes[0]), dotProduct(translation, myAxes[1]), dotProduct(translation, myAxes[2]));
+	
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			absRot[i][j] = abs(rot[i][j]) + std::numeric_limits<float>::epsilon();
+		}
+	}
+
+	
+}
+
+float MyBOClass::dotProduct(vector3 a, vector3 b) {
+	return a.x*b.x + a.y*b.y + a.z*b.z;
 }

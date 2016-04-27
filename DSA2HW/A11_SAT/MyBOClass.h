@@ -6,6 +6,8 @@ Date: 2015/11
 #define __MYBOCLASS_H_
 
 #include "RE\ReEng.h"
+#include <numeric>
+#include <stdlib.h>
 
 //System Class
 class MyBOClass
@@ -27,6 +29,7 @@ class MyBOClass
 
 	matrix4 m_m4ToWorld = IDENTITY_M4; //Matrix that will take us from local to world coordinate
 public:
+	float MyBOClass::dotProduct(vector3 a, vector3 b);
 	/*
 	USAGE: Constructor
 	ARGUMENTS: ---
@@ -156,6 +159,8 @@ public:
 	OUTPUT: ---
 	*/
 	void DisplayReAlligned(vector3 a_v3Color = REDEFAULT);
+
+	bool RunSAT(MyBOClass* const a_pOther);
 
 private:
 	/*
