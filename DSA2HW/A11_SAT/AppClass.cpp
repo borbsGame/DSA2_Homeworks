@@ -79,7 +79,8 @@ void AppClass::Display(void)
 	//clear the screen
 	ClearScreen();
 	//Render the grid based on the camera's mode:
-	m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
+	//m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
+	m_pMeshMngr->AddGridToQueue();
 	m_pMeshMngr->Render(); //renders the render list
 	//m_pMeshMngr->ResetRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
