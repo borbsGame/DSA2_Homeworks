@@ -248,6 +248,8 @@ bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
 	matrix3 rot, absRot;
 	vector3 myAxes[3];
 	vector3 otherAxes[3];
+	vector3 myHalfW = this->GetHalfWidth();
+	vector3 otherHalfW = a_pOther->GetHalfWidth();
 
 	myAxes[0] = vector3(m_m4ToWorld[0][0], m_m4ToWorld[0][1], m_m4ToWorld[0][2]);
 	myAxes[1] = vector3(m_m4ToWorld[1][0], m_m4ToWorld[1][1], m_m4ToWorld[1][2]);
@@ -273,7 +275,32 @@ bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
 		}
 	}
 
-	
+	//TODO: RETURN TO THIS, MIGHT BE GLOBAL
+	for (int i = 0; i < 3; i++) {
+		ra = myHalfW[i];
+		rb = otherHalfW[0] * absRot[i][0] + otherHalfW[1] * absRot[i][1] + otherHalfW[2] * absRot[i][2];
+		if (abs(translation[i]) > ra + rb) return true;
+	}
+	for (int i = 0; i < 3; i++) {
+		ra = myHalfW[0] * absRot[0][i] + myHalfW[1] * absRot[1][i] + myHalfW[2] * absRot[2][i];
+		rb = otherHalfW[i];
+		if (abs(translation[0] * rot[0][i] + translation[1] * rot[1][i] + translation[1] * rot[1][i]) > ra + rb) return true;
+	}
+
+	//a0xb0
+	ra = myHalfW[1] * absRot[2][0] + myHalfW[2] * absRot[1][0];
+	rb = otherHalfW[1] * absRot[0][2] + otherHalfW[2] * absRot[0][1];
+	if (abs(translation[2] * rot[1][0] - translation[1] * rot[2][0]) > ra + rb) return true;
+
+	//a0xb1
+	ra = myHalfW[1] * absRot[2][1] + myHalfW[2] * absRot[1][1];
+	rb = otherHalfW[0] * absRot[0][2] + otherHalfW[2] * absRot[0][0];
+	if (abs(translation[2] * rot[1][1] - translation[1] * rot[2][1]) > ra + rb) return true;
+
+	//a0xb2
+	ra = myHalfW[1] * absRot[2][2] + myHalfW[2] * absRot[1][2];
+	rb = otherHalfW[0] * absRot[0][1] + otherHalfW[1] * absRot[0][0];
+	if (abs(translation[2] * rot[1][2] - translation[1] * rot[2][2]) > ra + rb) return true;
 }
 
 float MyBOClass::dotProduct(vector3 a, vector3 b) {
