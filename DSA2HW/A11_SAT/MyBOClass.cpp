@@ -266,7 +266,6 @@ bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
 		}
 	}
 
-	//TODO: RETURN TO THIS, MIGHT BE GLOBAL
 	vector3 translation = a_pOther->GetCenterGlobal() - this->GetCenterGlobal();
 	translation = vector3(glm::dot(translation, myAxes[0]), glm::dot(translation, myAxes[1]), glm::dot(translation, myAxes[2]));
 	
@@ -281,14 +280,14 @@ bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
 		ra = myHalfW[i];
 		rb = otherHalfW[0] * absRot[i][0] + otherHalfW[1] * absRot[i][1] + otherHalfW[2] * absRot[i][2];
 		if (abs(translation[i]) > ra + rb) { 
-			return true; 
+			return false; 
 		}
 	}
 	for (int i = 0; i < 3; i++) {
 		ra = myHalfW[0] * absRot[0][i] + myHalfW[1] * absRot[1][i] + myHalfW[2] * absRot[2][i];
 		rb = otherHalfW[i];
 		if (abs(translation[0] * rot[0][i] + translation[1] * rot[1][i] + translation[2] * rot[2][i]) > ra + rb) {
-			return true;
+			return false;
 		}
 	}
 
@@ -296,69 +295,69 @@ bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
 	ra = myHalfW[1] * absRot[2][0] + myHalfW[2] * absRot[1][0];
 	rb = otherHalfW[1] * absRot[0][2] + otherHalfW[2] * absRot[0][1];
 	if (abs(translation[2] * rot[1][0] - translation[1] * rot[2][0]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a0xb1
 	ra = myHalfW[1] * absRot[2][1] + myHalfW[2] * absRot[1][1];
 	rb = otherHalfW[0] * absRot[0][2] + otherHalfW[2] * absRot[0][0];
 	if (abs(translation[2] * rot[1][1] - translation[1] * rot[2][1]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a0xb2
 	ra = myHalfW[1] * absRot[2][2] + myHalfW[2] * absRot[1][2];
 	rb = otherHalfW[0] * absRot[0][1] + otherHalfW[1] * absRot[0][0];
 	if (abs(translation[2] * rot[1][2] - translation[1] * rot[2][2]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a1xb0
 	ra = myHalfW[0] * absRot[2][0] + myHalfW[2] * absRot[0][0];
 	rb = otherHalfW[1] * absRot[1][2] + otherHalfW[2] * absRot[1][1];
 	if (abs(translation[0] * rot[2][0] - translation[2] * rot[0][0]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a1xb1
 	ra = myHalfW[0] * absRot[2][1] + myHalfW[2] * absRot[0][1];
 	rb = otherHalfW[0] * absRot[1][2] + otherHalfW[2] * absRot[1][0];
 	if (abs(translation[0] * rot[2][1] - translation[2] * rot[0][1]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a1xb2
 	ra = myHalfW[0] * absRot[2][2] + myHalfW[2] * absRot[0][2];
 	rb = otherHalfW[0] * absRot[1][1] + otherHalfW[1] * absRot[1][0];
 	if (abs(translation[0] * rot[2][2] - translation[2] * rot[0][2]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a2xb0
 	ra = myHalfW[0] * absRot[1][0] + myHalfW[1] * absRot[0][0];
 	rb = otherHalfW[1] * absRot[2][2] + otherHalfW[2] * absRot[2][1];
 	if (abs(translation[1] * rot[0][0] - translation[0] * rot[1][0]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a2xb1
 	ra = myHalfW[0] * absRot[1][1] + myHalfW[1] * absRot[0][1];
 	rb = otherHalfW[0] * absRot[2][2] + otherHalfW[2] * absRot[2][0];
 	if (abs(translation[1] * rot[0][1] - translation[0] * rot[1][1]) > ra + rb) {
-		return true;
+		return false;
 	}
 
 	//a2xb2
 	ra = myHalfW[0] * absRot[1][2] + myHalfW[1] * absRot[0][2];
 	rb = otherHalfW[0] * absRot[2][1] + otherHalfW[1] * absRot[2][0];
 	if (abs(translation[1] * rot[0][2] - translation[0] * rot[1][2]) > ra + rb) {
-		return true;
+		return false;
 	}
 	float c = abs(translation[1] * rot[0][2] - translation[0] * rot[1][2]);
 	float d = ra + rb;
 
 	//if no collisions are detected
-	return false;
+	return true;
 }
 
 float MyBOClass::dotProduct(vector3 a, vector3 b) {
