@@ -255,23 +255,24 @@ bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
 	myAxes[1] = vector3(m_m4ToWorld[1][0], m_m4ToWorld[1][1], m_m4ToWorld[1][2]);
 	myAxes[2] = vector3(m_m4ToWorld[2][0], m_m4ToWorld[2][1], m_m4ToWorld[2][2]);
 
+
 	otherAxes[0] = vector3(a_pOther->m_m4ToWorld[0][0], a_pOther->m_m4ToWorld[0][1], a_pOther->m_m4ToWorld[0][2]);
 	otherAxes[1] = vector3(a_pOther->m_m4ToWorld[1][0], a_pOther->m_m4ToWorld[1][1], a_pOther->m_m4ToWorld[1][2]);
 	otherAxes[2] = vector3(a_pOther->m_m4ToWorld[2][0], a_pOther->m_m4ToWorld[2][1], a_pOther->m_m4ToWorld[2][2]);
 
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			rot[i][j] = dotProduct(myAxes[i], otherAxes[j]);
+			rot[i][j] = glm::dot(myAxes[i], otherAxes[j]);
 		}
 	}
 
 	//TODO: RETURN TO THIS, MIGHT BE GLOBAL
-	vector3 translation = a_pOther->GetCenterLocal() - this->GetCenterLocal();
-	translation = vector3(dotProduct(translation, myAxes[0]), dotProduct(translation, myAxes[1]), dotProduct(translation, myAxes[2]));
+	vector3 translation = a_pOther->GetCenterGlobal() - this->GetCenterGlobal();
+	translation = vector3(glm::dot(translation, myAxes[0]), glm::dot(translation, myAxes[1]), glm::dot(translation, myAxes[2]));
 	
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			absRot[i][j] = abs(rot[i][j]) + std::numeric_limits<float>::epsilon();
+			absRot[i][j] = abs(rot[i][j]) +std::numeric_limits<float>::epsilon();
 		}
 	}
 
@@ -279,58 +280,82 @@ bool MyBOClass::RunSAT(MyBOClass* const a_pOther) {
 	for (int i = 0; i < 3; i++) {
 		ra = myHalfW[i];
 		rb = otherHalfW[0] * absRot[i][0] + otherHalfW[1] * absRot[i][1] + otherHalfW[2] * absRot[i][2];
-		if (abs(translation[i]) > ra + rb) return true;
+		if (abs(translation[i]) > ra + rb) { 
+			return true; 
+		}
 	}
 	for (int i = 0; i < 3; i++) {
 		ra = myHalfW[0] * absRot[0][i] + myHalfW[1] * absRot[1][i] + myHalfW[2] * absRot[2][i];
 		rb = otherHalfW[i];
-		if (abs(translation[0] * rot[0][i] + translation[1] * rot[1][i] + translation[1] * rot[1][i]) > ra + rb) return true;
+		if (abs(translation[0] * rot[0][i] + translation[1] * rot[1][i] + translation[2] * rot[2][i]) > ra + rb) {
+			return true;
+		}
 	}
 
 	//a0xb0
 	ra = myHalfW[1] * absRot[2][0] + myHalfW[2] * absRot[1][0];
 	rb = otherHalfW[1] * absRot[0][2] + otherHalfW[2] * absRot[0][1];
-	if (abs(translation[2] * rot[1][0] - translation[1] * rot[2][0]) > ra + rb) return true;
+	if (abs(translation[2] * rot[1][0] - translation[1] * rot[2][0]) > ra + rb) {
+		return true;
+	}
 
 	//a0xb1
 	ra = myHalfW[1] * absRot[2][1] + myHalfW[2] * absRot[1][1];
 	rb = otherHalfW[0] * absRot[0][2] + otherHalfW[2] * absRot[0][0];
-	if (abs(translation[2] * rot[1][1] - translation[1] * rot[2][1]) > ra + rb) return true;
+	if (abs(translation[2] * rot[1][1] - translation[1] * rot[2][1]) > ra + rb) {
+		return true;
+	}
 
 	//a0xb2
 	ra = myHalfW[1] * absRot[2][2] + myHalfW[2] * absRot[1][2];
 	rb = otherHalfW[0] * absRot[0][1] + otherHalfW[1] * absRot[0][0];
-	if (abs(translation[2] * rot[1][2] - translation[1] * rot[2][2]) > ra + rb) return true;
+	if (abs(translation[2] * rot[1][2] - translation[1] * rot[2][2]) > ra + rb) {
+		return true;
+	}
 
 	//a1xb0
 	ra = myHalfW[0] * absRot[2][0] + myHalfW[2] * absRot[0][0];
 	rb = otherHalfW[1] * absRot[1][2] + otherHalfW[2] * absRot[1][1];
-	if (abs(translation[0] * rot[2][0] - translation[2] * rot[0][0]) > ra + rb) return true;
+	if (abs(translation[0] * rot[2][0] - translation[2] * rot[0][0]) > ra + rb) {
+		return true;
+	}
 
 	//a1xb1
 	ra = myHalfW[0] * absRot[2][1] + myHalfW[2] * absRot[0][1];
 	rb = otherHalfW[0] * absRot[1][2] + otherHalfW[2] * absRot[1][0];
-	if (abs(translation[0] * rot[2][1] - translation[2] * rot[0][1]) > ra + rb) return true;
+	if (abs(translation[0] * rot[2][1] - translation[2] * rot[0][1]) > ra + rb) {
+		return true;
+	}
 
 	//a1xb2
 	ra = myHalfW[0] * absRot[2][2] + myHalfW[2] * absRot[0][2];
 	rb = otherHalfW[0] * absRot[1][1] + otherHalfW[1] * absRot[1][0];
-	if (abs(translation[0] * rot[2][2] - translation[2] * rot[0][2]) > ra + rb) return true;
+	if (abs(translation[0] * rot[2][2] - translation[2] * rot[0][2]) > ra + rb) {
+		return true;
+	}
 
 	//a2xb0
 	ra = myHalfW[0] * absRot[1][0] + myHalfW[1] * absRot[0][0];
 	rb = otherHalfW[1] * absRot[2][2] + otherHalfW[2] * absRot[2][1];
-	if (abs(translation[1] * rot[0][0] - translation[0] * rot[1][0]) > ra + rb) return true;
+	if (abs(translation[1] * rot[0][0] - translation[0] * rot[1][0]) > ra + rb) {
+		return true;
+	}
 
 	//a2xb1
 	ra = myHalfW[0] * absRot[1][1] + myHalfW[1] * absRot[0][1];
 	rb = otherHalfW[0] * absRot[2][2] + otherHalfW[2] * absRot[2][0];
-	if (abs(translation[1] * rot[0][1] - translation[0] * rot[1][1]) > ra + rb) return true;
+	if (abs(translation[1] * rot[0][1] - translation[0] * rot[1][1]) > ra + rb) {
+		return true;
+	}
 
 	//a2xb2
 	ra = myHalfW[0] * absRot[1][2] + myHalfW[1] * absRot[0][2];
 	rb = otherHalfW[0] * absRot[2][1] + otherHalfW[1] * absRot[2][0];
-	if (abs(translation[1] * rot[0][2] - translation[0] * rot[1][2]) > ra + rb) return true;
+	if (abs(translation[1] * rot[0][2] - translation[0] * rot[1][2]) > ra + rb) {
+		return true;
+	}
+	float c = abs(translation[1] * rot[0][2] - translation[0] * rot[1][2]);
+	float d = ra + rb;
 
 	//if no collisions are detected
 	return false;
