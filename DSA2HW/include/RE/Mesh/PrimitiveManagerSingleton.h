@@ -36,6 +36,7 @@ class ReEngDLL PrimitiveManagerSingleton
 	MeshClass* m_pSphereWire = nullptr;//Sphere Wire primitive
 	MeshClass* m_pHexagon = nullptr;//Hexagon primitive
 	MeshClass* m_pHexagonWire = nullptr;//Hexagon Wire primitive
+	MeshClass* m_pSkybox = nullptr;//Skybox primitive
 
 	MeshDrawerSingleton* m_pMeshDrawer = nullptr;
 
@@ -57,73 +58,80 @@ public:
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddAxisToQueue(matrix4 a_m4ToWorld);
+	MeshClass* AddSkyboxToRenderList(String a_sTextureName);
+
+	/*
+	USAGE: Render the axis on the specified position
+	ARGUMENTS:
+	OUTPUT: returns the pointer to mesh used in the queue
+	*/
+	MeshClass* AddAxisToRenderList(matrix4 a_m4ToWorld);
 	/*
 	USAGE: Renders the cube on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddPlaneToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT);
+	MeshClass* AddPlaneToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT);
 	/*
 	USAGE: Renders the cube on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddCubeToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
+	MeshClass* AddCubeToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
 	/*
 	USAGE: Renders the cone on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddConeToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
+	MeshClass* AddConeToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
 	/*
 	USAGE: Renders the cylinder on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddCylinderToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
+	MeshClass* AddCylinderToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
 	/*
 	USAGE: Renders the tube on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddTubeToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
+	MeshClass* AddTubeToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
 	/*
 	USAGE: Renders the torus on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddTorusToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
+	MeshClass* AddTorusToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
 	/*
 	USAGE: Renders a hexagon on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddHexagonToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
+	MeshClass* AddHexagonToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
 	/*
 	USAGE: Renders the sphere on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	MeshClass* AddSphereToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
+	MeshClass* AddSphereToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT, int a_RenderOption = RERENDER::SOLID | RERENDER::WIRE);
 	/*
 	USAGE: Renders the sphere on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	void AddGridToQueue(float a_fSize = 1.0f, int a_Axis = REAXIS::XY, vector3 a_v3Color = REDEFAULT);
+	void AddGridToRenderList(float a_fSize = 1.0f, int a_Axis = REAXIS::XY, vector3 a_v3Color = REDEFAULT);
 	/*
 	USAGE: Renders the sphere on the specified position
 	ARGUMENTS:
 	OUTPUT: returns the pointer to mesh used in the queue
 	*/
-	void AddLineToQueue(vector3 a_v3Start, vector3 a_v3End, vector3 a_v3StartColor = REDEFAULT, vector3 a_v3EndColor = REDEFAULT);
+	void AddLineToRenderList(vector3 a_v3Start, vector3 a_v3End, vector3 a_v3StartColor = REDEFAULT, vector3 a_v3EndColor = REDEFAULT);
 	/*
 	USAGE: Renders a camera shape on the specified position
 	ARGUMENTS:
 	OUTPUT: ---
 	*/
-	void AddCameraToQueue(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT);
+	void AddCameraToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color = REDEFAULT);
 	
 private:
 	/*

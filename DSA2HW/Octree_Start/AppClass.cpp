@@ -59,9 +59,11 @@ void AppClass::Update(void)
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
-	m_pOctreeHead->Display();
-	//m_pOctreeHead->m_pChildren[0].Draw();
-
+	//m_pOctreeHead->Display();
+	for (int i = 0; i < 8; i++)
+	{
+		m_pOctreeHead->m_pChildren[i].Display();
+	}
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
 	//print info into the console
