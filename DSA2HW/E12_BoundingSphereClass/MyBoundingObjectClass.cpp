@@ -84,11 +84,11 @@ MyBoundingObjectClass::~MyBoundingObjectClass() {
 void MyBoundingObjectClass::drawBO(MeshManagerSingleton* meshMngr) {
 	if (m_isVisible) {
 		if (m_boxVisible) {
-			meshMngr->AddCubeToQueue(
+			meshMngr->AddCubeToRenderList(
 				glm::translate(vector3(this->GetCentroidWorld())) *
 				glm::scale(vector3(this->GetSize())), this->m_Color, WIRE);
 		}
-		meshMngr->AddSphereToQueue(
+		meshMngr->AddSphereToRenderList(
 			glm::translate(vector3(this->GetCentroidWorld())) *
 			glm::scale(vector3(this->GetRadius()) * 2.0f), this->m_Color, WIRE);
 	}

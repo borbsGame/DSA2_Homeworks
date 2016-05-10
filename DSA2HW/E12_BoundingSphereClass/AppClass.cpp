@@ -64,20 +64,20 @@ void AppClass::Update(void)
 
 	if (isColliding)
 	{
-		/*m_pMeshMngr->AddCubeToQueue(
+		/*m_pMeshMngr->AddCubeRenderList(
 			glm::translate(vector3(m_pBox1->GetCenterG())) *
 			glm::scale(vector3(m_pBox1->GetSize())), RERED, SOLID);
-		m_pMeshMngr->AddCubeToQueue(glm::translate(vector3(m_pBox2->GetCenterG()))  *
+		m_pMeshMngr->AddCubeRenderList(glm::translate(vector3(m_pBox2->GetCenterG()))  *
 			glm::scale(vector3(m_pBox2->GetSize())), RERED, SOLID);*//*
 		testBO->setColor(RERED);
 		testBO2->setColor(RERED);
 	}
 	else
 	{
-		/*m_pMeshMngr->AddCubeToQueue(
+		/*m_pMeshMngr->AddCubeRenderList(
 			glm::translate(vector3(m_pBox1->GetCenterG())) *
 			glm::scale(vector3(m_pBox1->GetSize())), REGREEN, WIRE);
-		m_pMeshMngr->AddCubeToQueue(glm::translate(vector3(m_pBox2->GetCenterG()))  *
+		m_pMeshMngr->AddCubeRenderList(glm::translate(vector3(m_pBox2->GetCenterG()))  *
 			glm::scale(vector3(m_pBox2->GetSize())), REGREEN, WIRE);*//*
 		testBO->setColor(REGREEN);
 		testBO2->setColor(REGREEN);
@@ -109,16 +109,16 @@ void AppClass::Display(void)
 	switch (m_pCameraMngr->GetCameraMode())
 	{
 	default: //Perspective
-		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XY); //renders the XY grid with a 100% scale
+		m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XY); //renders the XY grid with a 100% scale
 		break;
 	case CAMERAMODE::CAMROTHOX:
-		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::YZ, RERED * 0.75f); //renders the YZ grid with a 100% scale
+		m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::YZ, RERED * 0.75f); //renders the YZ grid with a 100% scale
 		break;
 	case CAMERAMODE::CAMROTHOY:
-		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XZ, REGREEN * 0.75f); //renders the XZ grid with a 100% scale
+		m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XZ, REGREEN * 0.75f); //renders the XZ grid with a 100% scale
 		break;
 	case CAMERAMODE::CAMROTHOZ:
-		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XY, REBLUE * 0.75f); //renders the XY grid with a 100% scale
+		m_pMeshMngr->AddGridToRenderList(1.0f, REAXIS::XY, REBLUE * 0.75f); //renders the XY grid with a 100% scale
 		break;
 	}
 	
