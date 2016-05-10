@@ -21,10 +21,13 @@ void AppClass::InitVariables(void)
 		vector3(0.0f, 2.5f, 15.0f),//Camera position
 		vector3(0.0f, 2.5f, 0.0f),//What Im looking at
 		REAXISY);//What is up
+
+	optimizationSwitch = false;
+
 	m_pBOMngr = MyBOManager::GetInstance();
 
 	//Load a model onto the Mesh manager
-	for (uint i = 0; i < 10; i++)
+	for (uint i = 0; i < 50; i++)
 	{
 		String sName = "Creeper" + std::to_string(i);
 		vector3 v3Position = glm::sphericalRand(10.0f);
@@ -59,10 +62,17 @@ void AppClass::Update(void)
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
-	//m_pOctreeHead->Display();
-	for (int i = 0; i < 8; i++)
+	if (optimizationSwitch)
 	{
-		m_pOctreeHead->m_pChildren[i].Display();
+		m_pMeshMngr->Print("OPTIMIZED\n");
+		for (int i = 0; i < 8; i++)
+		{
+			m_pOctreeHead->m_pChildren[i].Display();
+		}
+	}
+	else
+	{
+		m_pMeshMngr->Print("BRUTE FORCE\n");
 	}
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
@@ -74,7 +84,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->Print("Selection: ");
 	m_pMeshMngr->PrintLine(m_pMeshMngr->GetInstanceGroupName(m_selection.first, m_selection.second), REYELLOW);
 	
-	m_pMeshMngr->Print("FPS:");
+	m_pMeshMngr->Print("FPS: ");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
 }
 

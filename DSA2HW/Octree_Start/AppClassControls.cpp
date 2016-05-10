@@ -41,6 +41,14 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O))
+	{
+		if (optimizationSwitch == false)
+			optimizationSwitch = true;
+		else
+			optimizationSwitch = false;
+	}
 #pragma endregion
 
 #pragma region Other Actions

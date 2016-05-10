@@ -11,11 +11,6 @@ Date: 2015/06
 //System Class
 class MyOctant
 {
-	/*vector3 m_v3Center; //center of the octant
-	float m_fSize = 0.0f; //how large the cube is
-	MyOctant* m_pParent = nullptr;
-	uint m_uChildren = 0;*/
-	
 	vector3 m_v3Position;
 	float m_fSize = 0.0f;
 	MeshManagerSingleton* m_pMeshMngr = nullptr;

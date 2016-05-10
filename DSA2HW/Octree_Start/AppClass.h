@@ -16,6 +16,8 @@ class AppClass : public ReEngAppClass
 {
 	MyOctant* m_pOctreeHead = nullptr;
 	MyBOManager* m_pBOMngr = nullptr;
+	bool optimizationSwitch; 
+
 public:
 	typedef ReEngAppClass super;
 
