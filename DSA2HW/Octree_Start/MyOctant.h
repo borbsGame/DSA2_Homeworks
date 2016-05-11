@@ -16,6 +16,7 @@ class MyOctant
 	MeshManagerSingleton* m_pMeshMngr = nullptr;
 	int m_nChildCount = 0;
 	MyBOManager* m_pBOMngr = nullptr;
+	std::vector<MyBOClass*> objInside;
 	
 public:
 

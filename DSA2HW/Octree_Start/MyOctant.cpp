@@ -89,6 +89,8 @@ void MyOctant::Display(void)
 
 void MyOctant::Subdivide(void)
 {
+
+	uint nObjectCount = m_pBOMngr->GetObjectCount();
 	/*m_uChildren = 8;
 	m_pChildren = new MyOctant[m_uChildren];
 	for (uint index = 0; index < 8; index++)
@@ -112,41 +114,10 @@ void MyOctant::Subdivide(void)
 	}
 	fNewSize /= 2.0f;
 
-	int objChild0 = 0;
-
 	//for the index 0
 	m_pChildren[0].m_v3Position.x += fNewSize;
 	m_pChildren[0].m_v3Position.y += fNewSize;
 	m_pChildren[0].m_v3Position.z += fNewSize;
-
-	
-	//check if more than one object is in Child 1 and subdivide if it is the case
-	uint nObjectCount = m_pBOMngr->GetObjectCount();
-
-	vector3 vMaxG = m_pChildren[0].m_v3Position + vector3(m_pChildren[0].m_fSize);
-	vector3 vMinG = m_pChildren[0].m_v3Position - vector3(m_pChildren[0].m_fSize);
-
-	for (int i = 0; i < nObjectCount; i++)
-	{
-		MyBOClass* pBO = m_pBOMngr->GetBoundingObject(i);
-		vector3 vMax = pBO->GetMaxG();
-		vector3 vMin = pBO->GetMinG();
-		
-		if (vMax.x < vMaxG.x)
-			if (vMin.x > vMinG.x)
-				if (vMax.y < vMaxG.y)
-					if (vMin.y > vMinG.y)
-						if (vMax.z < vMaxG.z)
-							if (vMin.z > vMinG.z)
-								objChild0++;
-		
-	}
-
-	if (objChild0 > 1)
-	{
-		m_pChildren[0].Subdivide();
-	}
-	
 
 	//for the index 1
 	m_pChildren[1].m_v3Position.x -= fNewSize;
@@ -182,6 +153,34 @@ void MyOctant::Subdivide(void)
 	m_pChildren[7].m_v3Position.x += fNewSize;
 	m_pChildren[7].m_v3Position.y -= fNewSize;
 	m_pChildren[7].m_v3Position.z -= fNewSize;
+
+	for (int i = 0; i < 8; i++)
+	{
+		vector3 vMaxG = m_pChildren[i].m_v3Position + vector3(m_pChildren[i].m_fSize);
+		vector3 vMinG = m_pChildren[i].m_v3Position - vector3(m_pChildren[i].m_fSize);
+		for (int j = 0; j < nObjectCount; j++)
+		{
+			MyBOClass* pBO = m_pBOMngr->GetBoundingObject(j);
+			vector3 vMax = pBO->GetMaxG();
+			vector3 vMin = pBO->GetMinG();
+
+			if (vMax.x < vMaxG.x)
+				if (vMin.x > vMinG.x)
+					if (vMax.y < vMaxG.y)
+						if (vMin.y > vMinG.y)
+							if (vMax.z < vMaxG.z)
+								if (vMin.z > vMinG.z)
+								{
+									m_pChildren[i].objInside.push_back(pBO);
+								}
+
+		}
+
+		if (m_pChildren[i].objInside.size() > 4)
+		{
+			m_pChildren[i].Subdivide();
+		}
+	}
 }
 void MyOctant::ReleaseChildren(void)
 {

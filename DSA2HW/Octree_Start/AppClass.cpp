@@ -79,6 +79,8 @@ void AppClass::Update(void)
 	else
 	{
 		m_pMeshMngr->Print("BRUTE FORCE\n");
+
+		m_pBOMngr->Update();
 	}
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
