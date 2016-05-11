@@ -100,7 +100,8 @@ void MyOctant::Subdivide(void)
 		m_pChildren[index].m_v3Center.z += m_pChildren[index].m_fSize / 2.0f;
 	}*/
 
-	m_bHead = false; 
+	m_bHead = false;
+
 	m_pChildren = new MyOctant[8];
 	m_nChildCount = 8;
 	float fNewSize = this->m_fSize / 2;
@@ -111,10 +112,41 @@ void MyOctant::Subdivide(void)
 	}
 	fNewSize /= 2.0f;
 
+	int objChild0 = 0;
+
 	//for the index 0
 	m_pChildren[0].m_v3Position.x += fNewSize;
 	m_pChildren[0].m_v3Position.y += fNewSize;
 	m_pChildren[0].m_v3Position.z += fNewSize;
+
+	
+	//check if more than one object is in Child 1 and subdivide if it is the case
+	uint nObjectCount = m_pBOMngr->GetObjectCount();
+
+	vector3 vMaxG = m_pChildren[0].m_v3Position + vector3(m_pChildren[0].m_fSize);
+	vector3 vMinG = m_pChildren[0].m_v3Position - vector3(m_pChildren[0].m_fSize);
+
+	for (int i = 0; i < nObjectCount; i++)
+	{
+		MyBOClass* pBO = m_pBOMngr->GetBoundingObject(i);
+		vector3 vMax = pBO->GetMaxG();
+		vector3 vMin = pBO->GetMinG();
+		
+		if (vMax.x < vMaxG.x)
+			if (vMin.x > vMinG.x)
+				if (vMax.y < vMaxG.y)
+					if (vMin.y > vMinG.y)
+						if (vMax.z < vMaxG.z)
+							if (vMin.z > vMinG.z)
+								objChild0++;
+		
+	}
+
+	if (objChild0 > 1)
+	{
+		m_pChildren[0].Subdivide();
+	}
+	
 
 	//for the index 1
 	m_pChildren[1].m_v3Position.x -= fNewSize;
