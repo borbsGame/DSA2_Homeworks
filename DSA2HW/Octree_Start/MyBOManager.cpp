@@ -203,6 +203,7 @@ void MyBOManager::Update(void)
 {
 	for (uint nObject = 0; nObject < m_nObjectCount; nObject++)
 	{
+		DisplayOriented(nObject, REWHITE);
 		m_llCollidingIndices[nObject].clear();
 	}
 	CheckCollisions();
@@ -215,6 +216,8 @@ void MyBOManager::CheckCollisions(void)
 		{
 			if (m_lObject[nObjectA]->IsColliding(m_lObject[nObjectB]))
 			{
+				DisplayOriented((int)nObjectA, RERED);
+				DisplayOriented((int)nObjectB, RERED);
 				m_llCollidingIndices[nObjectA].push_back(nObjectB);
 				m_llCollidingIndices[nObjectB].push_back(nObjectA);
 			}
