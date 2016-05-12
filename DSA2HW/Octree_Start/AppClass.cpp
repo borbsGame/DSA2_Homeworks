@@ -36,7 +36,6 @@ void AppClass::InitVariables(void)
 	}
 
 	m_pOctreeHead = new MyOctant();
-	m_pOctreeHead->Subdivide();
 
 	/*
 	for (int i = 0; i < 8; i++)
@@ -70,6 +69,7 @@ void AppClass::Update(void)
 
 	if (optimizationSwitch)
 	{
+		m_pOctreeHead->Subdivide();
 		m_pMeshMngr->Print("OPTIMIZED\n");
 		for (int i = 0; i < 8; i++)
 		{

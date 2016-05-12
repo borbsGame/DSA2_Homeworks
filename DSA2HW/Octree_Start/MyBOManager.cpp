@@ -73,6 +73,19 @@ void MyBOManager::AddObject(std::vector<vector3> a_lVertex, String a_sName)
 	std::vector<int> lVector;
 	m_llCollidingIndices.push_back(lVector);
 }
+
+void MyBOManager::AddObject(MyBOClass* BOclass, String a_sName)
+{
+	MyBOClass* pObject = BOclass;
+	if (pObject != nullptr)
+	{
+		m_lObject.push_back(pObject);//Add the Object
+		m_mapIndex[a_sName] = m_nObjectCount; //Add entry to the dictionary
+	}
+	m_nObjectCount = m_lObject.size();
+	std::vector<int> lVector;
+	m_llCollidingIndices.push_back(lVector);
+}
 void MyBOManager::SetModelMatrix(matrix4 a_mModelMatrix, String a_sIndex)
 {
 	//find the object

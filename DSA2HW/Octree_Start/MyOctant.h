@@ -17,6 +17,7 @@ class MyOctant
 	int m_nChildCount = 0;
 	MyBOManager* m_pBOMngr = nullptr;
 	std::vector<MyBOClass*> objInside;
+	MyBOManager* newBOMngr = nullptr;
 	
 public:
 

@@ -47,6 +47,8 @@ public:
 	OUTPUT: ---
 	*/
 	void AddObject(String a_sName);
+
+	void AddObject(MyBOClass* BOclass, String a_sName);
 	/*
 	USAGE: Sets the model matrix to the specified index
 	ARGUMENTS:

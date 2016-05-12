@@ -176,9 +176,26 @@ void MyOctant::Subdivide(void)
 
 		}
 
-		if (m_pChildren[i].objInside.size() > 4)
+		if (m_pChildren[i].objInside.size() > 3)
 		{
 			m_pChildren[i].Subdivide();
+		}
+		
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_pChildren[i].objInside.size() > 1)
+		{
+			for (int k = 0; k < m_pChildren[i].objInside.size(); k++) {
+				//newBOMngr->AddObject(m_pChildren[i].objInside[k], "oct" + std::to_string(i) + "," + std::to_string(k));
+				if (k+1 < m_pChildren[i].objInside.size()) {
+					if (m_pChildren[i].objInside[k]->IsColliding(m_pChildren[i].objInside[k+1])) {
+						//m_pMeshMngr->SetVisibleBO()
+						m_pChildren[i].objInside[k]->DisplayOriented(RERED);
+						m_pChildren[i].objInside[k+1]->DisplayOriented(RERED);
+					}
+				}
+			}
 		}
 	}
 }
